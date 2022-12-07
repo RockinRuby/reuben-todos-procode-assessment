@@ -5,11 +5,12 @@ import { store } from './app/store';
 import App from './App';
 
 test('renders learn react link', () => {
-  const { getByText } = render(
+  const view = render(
     <Provider store={store}>
       <App />
     </Provider>
   );
 
-  expect(getByText(/learn/i)).toBeInTheDocument();
+  // eslint-disable-next-line testing-library/prefer-screen-queries
+  expect(view.getByTestId("app_wrapper")).toBeInTheDocument();
 });
