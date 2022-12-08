@@ -34,13 +34,14 @@ export const todosSlice = createSlice({
         id,
         isChecked: false,
         description: action.payload.description,
-        priority: action.payload.priority || 1,
+        priority: action.payload.priority ?? 1,
       }
     },
     toggleTodo: (state, action: PayloadAction<string>) => {
-      state.list[action.payload].isChecked = !state.list[action.payload].isChecked;
+      if (state.list[action.payload]) state.list[action.payload].isChecked = !state.list[action.payload].isChecked;
     },
     deleteTodo: (state, action: PayloadAction<string>) => {
+      /* Delete is safe as it will not do anything if index does not exist */
       delete state.list[action.payload];
     },
   },
