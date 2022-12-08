@@ -5,6 +5,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
+import { Tooltip } from "@mui/material";
 
 interface IAddTodoForm {
   label?: string;
@@ -50,7 +51,8 @@ function AddTodo({
   const handleTodoChange = (e: React.ChangeEvent<HTMLInputElement>): void =>
     setTodoDescription(e.currentTarget.value);
 
-  const handleAdd = (): void => {
+  const handleAdd = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
     isTouched.current = true;
     if (validateTodoSchema(todoDescription)) {
       onAdd(todoDescription);
@@ -60,7 +62,13 @@ function AddTodo({
   };
   return (
     <Box className={styles.wrapper} sx={{ marginBottom: 4 }}>
-      <Box sx={{ width: { xs: "80vw", md: "400px", xl: "600px" } }}>
+      <Box
+        component="form"
+        sx={{ width: { xs: "80vw", md: "400px", xl: "600px" } }}
+        onSubmit={handleAdd}
+        noValidate
+        autoComplete="off"
+      >
         <TextField
           variant="outlined"
           color="secondary"
@@ -73,14 +81,11 @@ function AddTodo({
           helperText={error}
           InputProps={{
             endAdornment: (
-              <IconButton
-                type="submit"
-                color="secondary"
-                size="large"
-                onClick={handleAdd}
-              >
-                <AddIcon fontSize="inherit" />
-              </IconButton>
+              <Tooltip title="Add to list">
+                <IconButton type="submit" color="secondary" size="large">
+                  <AddIcon fontSize="inherit" />
+                </IconButton>
+              </Tooltip>
             ),
           }}
           fullWidth
